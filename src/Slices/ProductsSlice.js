@@ -4,33 +4,23 @@ import {createSlice,createAsyncThunk} from "@reduxjs/toolkit"
 export var fetchProducts = createAsyncThunk(
     "fetch/fetchproducts",
     async ()=>{
-        var response = await fetch("https://fakestoreapi.com/products")
+        var response = await fetch("https://dummyjson.com/products")
         var data = await response.json()
         return data 
     }
 )
 
 
-
-var productsSlice = createSlice({
-    name : "products",
+var productSlice = createSlice({
+    name : "productSlice",
     initialState : {
         products : [],
-        loading : false ,
-        error : null ,
-        cart : []
+        loading : false,
+        error : null
+
     },
     reducers : {
-        addToCart : (state,action)=>{
-            var existItem = state.cart.find(item=>item.id == action.payload.id)
-            if(existItem){
-                existItem.quantity += 1
-            }else{
-                state.cart.push({...action.payload,quantity: 1})
-            }
-            
-
-        }
+    
     },
     extraReducers : (builder)=>{
         builder
@@ -38,20 +28,15 @@ var productsSlice = createSlice({
             state.loading = true
         })
         .addCase(fetchProducts.fulfilled,(state,action)=>{
-            state.products = action.payload
+            state.loading = false,
+            state.products = action.payload.products
         })
         .addCase(fetchProducts.rejected,(state,action)=>{
-            state.error = "error",
-            state.loading = false
-        })
-
+            state.loading = false,
+            state.error = "error" })
     }
-
 })
 
+export var {addToCart} = productSlice.actions
 
-export var {addToCart} = productsSlice.actions
-
-export default productsSlice.reducer
-
-
+export default productSlice.reducer
