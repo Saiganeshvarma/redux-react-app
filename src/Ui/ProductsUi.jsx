@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useSelector,useDispatch} from "react-redux"
 import {fetchProducts } from '../Slices/ProductsSlice'
 import { useNavigate } from 'react-router'
@@ -16,7 +16,9 @@ const ProductsUi = () => {
 
     useEffect(()=>{
         dispatch(fetchProducts())
+       
     },[])
+
 
     function handleCart(product){
        
@@ -35,6 +37,7 @@ const ProductsUi = () => {
         <Toaster/>
         <button onClick={()=>navigate("/cart")}>Cart {cart.length}</button>
         <button onClick={()=>navigate("/wishlist")}>wishlist</button>
+        <button onClick={()=>navigate("/profile")}>Profile</button>
         {
             products.map((item)=>{
                 return(
